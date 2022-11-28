@@ -8,8 +8,8 @@ library(readxl)
 library(vtable)
 
 #load data
-setwd("~/Desktop/data200/PROJECT")
-bostondata <- read.csv("coredata.csv")
+setwd("~/Desktop/data200/PROJECT/data")
+bostondata <- read.csv("bostondata.csv")
 bostondata<-as.data.table(bostondata)
 
 #categories in offense_type 
@@ -38,6 +38,6 @@ histogram<-ggplot(bostondata,
                   aes(x=offense_type)) + geom_histogram(stat="count")
 histogram
 
-testdata <- read.csv("tmpobugbywv.csv")
-testdata<-as.data.table(testdata)
+
+
 

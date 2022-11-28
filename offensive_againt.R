@@ -29,6 +29,8 @@ histogram<-ggplot(bostondata, aes(x=offense_against,fill=offense_against)) +
   geom_histogram(stat="count")
 histogram
 
+
+###get individual histogram for each year if its needed
 #get data for only 2016 data and get histogram for offense against for 2016
 bostondata2016<-bostondata[year==2016]
 
@@ -63,6 +65,17 @@ bostondata2020<-bostondata[year==2020]
 bostondata2020<-ggplot(bostondata2020, aes(x=offense_against,fill=offense_against)) + 
   geom_histogram(stat="count")
 bostondata2020
+
+#get data for only 2021 data and get histogram for offense against for 2021
+bostondata2021<-bostondata[year==2021]
+
+bostondata2021<-ggplot(bostondata2021, aes(x=offense_against,fill=offense_against)) + 
+  geom_histogram(stat="count")
+bostondata2021
+
+
+
+
 
 
 
