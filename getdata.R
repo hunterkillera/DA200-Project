@@ -23,6 +23,8 @@ dt <- rbindlist(lapply(listOfFileNames, read.csv))
 bostondata<-dt[city_name=="Boston"]
 #add year column
 bostondata[,":=" (year=substr(date_single,1,4))]
+bostondata[,":=" (date=substr(date_single,1,10))]
+
 
 
 #export the file

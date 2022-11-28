@@ -28,15 +28,11 @@ offenseagainst_Frequency <- bostondata[, list(Frequency = .N), by = offense_agai
 offenseagainst_Frequency
 
 #pie chart
-piechart<- ggplot(Frequency, aes(x="", y=Frequency))+
+piechart<- ggplot(offensetype_Frequency, aes(x="", y=Frequency,fill=offense_type))+
   geom_bar(width = 1, stat = "identity") + coord_polar("y", start=0)
 piechart
 
 
-#
-histogram<-ggplot(bostondata, 
-                  aes(x=offense_type)) + geom_histogram(stat="count")
-histogram
 
 
 
