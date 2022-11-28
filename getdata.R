@@ -21,8 +21,13 @@ bostondata<-dt[city_name=="Boston"]
 #add year
 bostondata[,":=" (year=substr(date_single,1,4))]
 
+
 #export the file
 write.csv(bostondata,"~/Desktop/data200/PROJECT/coredata.csv", row.names = FALSE)
+
+#get data only for 2016-2021
+bostondata2016<-bostondata[year==2016]
+write.csv(bostondata,"~/Desktop/data200/PROJECT/bostondata2016.csv", row.names = FALSE)
 
 
 
