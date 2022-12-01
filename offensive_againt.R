@@ -9,7 +9,7 @@ library(vtable)
 
 #load data
 setwd("~/Desktop/data200/PROJECT")
-bostondata <- read.csv("coredata.csv")
+bostondata <- read.csv("bostondata.csv")
 bostondata<-as.data.table(bostondata)
 
 
