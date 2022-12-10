@@ -30,7 +30,9 @@ dpbostondata_Frequency
 #bar chart
 dphistogram<-ggplot(dpbostondata_Frequency, aes(x=year,y=Frequency,fill=year)) + 
   geom_bar(stat="identity", width=0.5)+ labs(title="Damage Property Data") +
-  scale_fill_brewer()
+  scale_fill_brewer() + theme(axis.title.x=element_text(size=30),
+                              axis.title.y=element_text(size=30),
+                             plot.title=element_text(size=30))
 dphistogram
 
 #sa = simple assault
@@ -41,7 +43,9 @@ sabostondata_Frequency
 #barchart
 sahistogram<-ggplot(sabostondata_Frequency, aes(x=year,y=Frequency,fill=year)) + 
   geom_bar(stat="identity", width=0.5)+ labs(title="Simple Assault Data") +
-  scale_fill_brewer()
+  scale_fill_brewer() + theme(axis.title.x=element_text(size=30),
+                              axis.title.y=element_text(size=30),
+                              plot.title=element_text(size=30))
 sahistogram
 
 #dv = drug violations
@@ -52,7 +56,9 @@ dvbostondata_Frequency
 #barchart
 dvhistogram<-ggplot(dvbostondata_Frequency, aes(x=year,y=Frequency,fill=year)) + 
   geom_bar(stat="identity", width=0.5) + labs(title="Drug Violation Data") +
-  scale_fill_brewer()
+  scale_fill_brewer() + theme(axis.title.x=element_text(size=30),
+                              axis.title.y=element_text(size=30),
+                              plot.title=element_text(size=30))
 dvhistogram
 
 #aol = all other larceny
@@ -63,7 +69,9 @@ aolbostondata_Frequency
 #barchart
 aolhistogram<-ggplot(aolbostondata_Frequency, aes(x=year,y=Frequency,fill=year)) + 
   geom_bar(stat="identity", width=0.5)+ labs(title="All Other Larceny Data") +
-  scale_fill_brewer()
+  scale_fill_brewer() + theme(axis.title.x=element_text(size=30),
+                              axis.title.y=element_text(size=30),
+                              plot.title=element_text(size=30))
 aolhistogram
 
 #tfmv = theft from motor vehicle
@@ -75,7 +83,9 @@ tfmvbostondata_Frequency
 #barchart
 ftmvhistogram<-ggplot(tfmvbostondata_Frequency, aes(x=year,y=Frequency,fill=year)) + 
   geom_bar(stat="identity", width=0.5) + labs(title="Theft from Motor Vehicle Data") +
-  scale_fill_brewer()
+  scale_fill_brewer() + theme(axis.title.x=element_text(size=30),
+                              axis.title.y=element_text(size=30),
+                              plot.title=element_text(size=30))
 ftmvhistogram
 
 
