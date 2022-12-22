@@ -45,6 +45,6 @@ piechart
 
 
 
-
-
+summarytable<-total_frequency_bydate[,list(mean=mean(Frequency),SD=sd(Frequency),F)]
+summarytable<-sumtable(total_frequency_bydate)
 
