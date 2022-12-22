@@ -1,0 +1,54 @@
+# If needed, load crimedata
+# ```{r load_data}
+# if(!require(crimedata)) install.packages("crimedata")                           #loads crimedata library for CODE data
+# list_crime_data()                                                               #calls data from r library 'crimedata'; 
+# 
+# df <- get_crime_data(                                                           #Call Boston crimedata to df
+#   cities="Boston"
+#   , type = 'extended'
+#   , years = 2016:2021  
+# )
+#
+# source: https://cran.r-project.org/web/packages/crimedata/vignettes/introduction.html
+# ```
+
+```{r add_col_Boston_district_names}
+#Key to identify bos_district codes as names
+key_bos_district =  c(A1 = 'Downtown', A7 = 'East Boston', A15 = 'Charlestown',  B2 = 'Roxbury', B3 = 'Mattapan', C6 = 'South Boston', C11 = 'Dorchester', D4 = 'South End', D14 = 'Allston/Brighton', E5 = 'West Roxbury', E13 = 'Jamaica Plain', E18 = 'Hyde Park',.default = NA)
+
+#Make new column in df with Boston District names. 
+df$bos_district_name <- recode(df$bos_district, !!!key_bos_district)
+```
+
+```{r leaflet_map1}
+if(!require(leaflet)) install.packages("leaflet")
+if(!require(dplyr)) install.packages("dplyr")
+
+data <- df
+leaflet(data, width = "100%") %>% addTiles() %>%
+  addTiles(group = "OSM (default)") %>%
+  #(provider = "Esri.WorldStreetMap",group = "World StreetMap") %>%
+  addProviderTiles(provider = "Esri.WorldImagery",group = "World Imagery") %>%
+  # addProviderTiles(provider = "NASAGIBS.ViirsEarthAtNight2012",group = "Nighttime Imagery") %>%
+  addMarkers(lng = ~longitude, lat = ~latitude, popup = paste(
+                    "<b>Unique id: </b>", data$uid,
+                    "<br>", "<b>Offense type: </b>", data$offense_type,
+                    "<br>", "<b>Offense group: </b>", data$offense_group,
+                    "<br>", "<b>Offense code group: </b>", data$bos_offense_code_group,
+                    "<br>", "<b>Offense description: </b>", data$bos_offense_description,
+                    "<br>", "<b>Offense against: </b>", data$offense_against,
+                    "<br>", "<b>Year: </b>", data$date_year,
+                    "<br>", "<b>Date: </b>", data$date_single,
+                    "<br>", "<b>Longitude: </b>", data$longitude,
+                    "<br>", "<b>Latitude: </b>", data$latitude,
+                    "<br>", "<b>Census_block: </b>", data$census_block,
+                    "<br>", "<b>Street: </b>", data$bos_street,
+                    "<br>", "<b>Boston district: </b>", data$bos_district,
+                    "<br>", "<b>Boston district name: </b>", data$bos_district_name),
+             clusterOptions = markerClusterOptions()) %>%
+  addLayersControl(
+    baseGroups = c("OSM (default)","World StreetMap", "World Imagery"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+```
