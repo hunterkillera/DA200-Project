@@ -1,0 +1,48 @@
+```{r, load_data}
+#if(!require(crimedata)) install.packages("crimedata")                           #loads crime data package for CODE data
+#list_crime_data()                                                               #callsfrom r package crimedata
+#
+#df <- get_crime_data(                                                           #Boston data only
+#  cities="Boston"
+#  , type = 'extended'
+#  , years = 2016:2021
+#)
+#
+#key_bos_district =  c(A1 = 'Downtown', A7 = 'East Boston', A15 = 'Charlestown',  B2 = 'Roxbury', B3 = 'Mattapan', C6 = 'South Boston', C11 = 'Dorchester', D4 = 'South End', D14 = 'Allston/Brighton', E5 = 'West Roxbury', E13 = 'Jamaica Plain', E18 = 'Hyde Park',.default = NA)
+#df$bos_district_name <- recode(df$bos_district, !!!key_bos_district)
+# # https://bostonpal.org/district-officers/
+```
+
+
+```{r, table3_offense_against}
+#Get data for number and % of crimes, crimes against by district
+df_offense_against <- data.frame(df)  %>%                                            #get data
+  group_by(offense_against,date_year) %>%                                       #Groupby ofense_against and date_year
+  count()                                                                       #count crimes
+df_offense_against <- df_offense_against %>% 
+  tidyr::spread(offense_against, n)                                             #'spread out' offense_against
+df_offense_against$'Total crimes' <- rowSums(df_offense_against[,2:4])                    #sum crimes by year as new column 'Total Crimes'
+df_offense_against <-df_offense_against %>%                                               #rename columns
+  dplyr::rename('Year'=date_year, 'Other'=other, 'Persons'=persons, 'Property'=property, 'Society'=society)
+
+df_offense_against_st=vtable::st(df_offense_against, digits=0,out='return')
+df_offense_against_st
+
+
+#Make table
+table3 <- knitr::kable(df_offense_against_st,                             #Use kable to style table
+                       format = "html", 
+                       caption = "Table 3", 
+                       font_size = 20) %>%
+  kable_styling(bootstrap_options = "basic",
+                full_width = F,
+                position = "float_left") %>%
+  kableExtra::kable_classic_2(bootstrap_options = c("striped", "hover")) %>%
+  kableExtra::add_footnote(c("Summary Table for offense against for the years 2016-2021. Std.Dev.=Standard Deviation, Min=Minimum value, Pctl.=Percentile, Max=Maximum Value."), 
+                           notation='none')
+
+
+#Export table
+table3 %>%                                                                      #save table as jpeg
+  kableExtra::save_kable("C:/Users/ ... /table3_df_offense_against_st.jpeg", density = 900)
+table3

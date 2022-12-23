@@ -1,0 +1,55 @@
+```{r load_data}
+# if(!require(crimedata)) install.packages("crimedata")                           #loads crime data package for CODE data
+# list_crime_data()                                                               #callsfrom r package crimedata
+# 
+# df <- get_crime_data(                                                           #Boston data only
+#   cities="Boston"
+#   , type = 'extended'
+#   , years = 2016:2021  
+# )
+# 
+# key_bos_district =  c(A1 = 'Downtown', A7 = 'East Boston', A15 = 'Charlestown',  B2 = 'Roxbury', B3 = 'Mattapan', C6 = 'South Boston', C11 = 'Dorchester', D4 = 'South End', D14 = 'Allston/Brighton', E5 = 'West Roxbury', E13 = 'Jamaica Plain', E18 = 'Hyde Park',.default = NA)
+# df$bos_district_name <- recode(df$bos_district, !!!key_bos_district)
+# # https://bostonpal.org/district-officers/
+```
+
+```{r, table2}
+#Get data for number and % of crimes by district
+df_dist_crime_count <- data.frame(df)  %>%                                      #get data
+  group_by(bos_district_name) %>%                                               #Boston police districts
+    count() %>%                                                                 #count crimes; each crime is a row
+  rename(n_total=n, 'Boston District'=bos_district_name)                        #rename columns
+df_dist_crime_count <- df_dist_crime_count %>%                                  #Make new column, divide by 6 to get annual crimes
+  mutate('Count of crimes per year' = n_total/6) 
+
+
+df_dist_crime_count$'Count of crimes per year' <- 
+  round(df_dist_crime_count$'Count of crimes per year', digits=0)                         #round the mean number of crimes
+
+df_dist_crime_count$'% Crime offenses' <- 
+  round(df_dist_crime_count$'Count of crimes per year'/
+          (sum(df_dist_crime_count$'Count of crimes per year'))*100, digits=2)            #get % of total crimes
+
+df_dist_crime_count <- df_dist_crime_count %>%  select(-n_total)                #remove n_total
+df_dist_crime_count
+
+
+#Make table2
+table2 <- knitr::kable(df_dist_crime_count,                                     #Use kable to style table
+                       format = "html", 
+                       caption = "Table 2", 
+                       font_size = 20) %>%
+  kable_styling(bootstrap_options = "basic",
+                full_width = F,
+                font_size = 20,
+                position = "float_left") %>%
+  kableExtra::kable_classic_2(bootstrap_options = c("striped", "hover")) %>%
+  kableExtra::add_footnote(c("The number of crimes are reported as the average number offenses per police district for years 2016-2021. Percentage of crime offenses is the number of crime offenses per police district/total number of crime offenses. Charlestown and Downtown are often combined as police districts (A1/A15) but have remined sepearate for this analysis; data granularity was not present to sepearate Allston/Brighton."), 
+                           notation='none')
+
+
+#Export table
+table2 %>%                                                                      #save table as jpeg
+  kableExtra::save_kable("C:/Users/ ... /table2_neigh_crime_count.jpeg", density = 900)
+table2
+```
